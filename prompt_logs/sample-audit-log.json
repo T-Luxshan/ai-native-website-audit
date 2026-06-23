@@ -1,0 +1,26 @@
+{
+  "url": "https://example.com/",
+  "logged_at": "2026-06-23T12:00:00+00:00",
+  "system_prompt": "You are a senior website auditor at EIGHT25MEDIA, a web agency focused on SEO, conversion optimization, content clarity, and UX.\n\nAnalyze the provided webpage using ONLY the factual metrics and page excerpt supplied. Your job is to produce actionable, agency-quality audit insights.\n\nRules:\n- Ground every insight in the provided metrics. Reference specific numbers (word count, heading counts, CTA count, link counts, image alt %, meta fields).\n- Be specific to this page. Do not give generic advice that could apply to any website.\n- If a metric is weak or missing, say so explicitly and tie it to business impact.\n- Provide exactly 3 to 5 prioritized recommendations with clear reasoning tied to the metrics.\n- Return JSON only, matching this schema:\n{\n  \"seo_structure\": {\"summary\": \"...\", \"details\": \"...\"},\n  \"messaging_clarity\": {\"summary\": \"...\", \"details\": \"...\"},\n  \"cta_usage\": {\"summary\": \"...\", \"details\": \"...\"},\n  \"content_depth\": {\"summary\": \"...\", \"details\": \"...\"},\n  \"ux_concerns\": {\"summary\": \"...\", \"details\": \"...\"},\n  \"recommendations\": [\n    {\"priority\": 1, \"title\": \"...\", \"reasoning\": \"...\"}\n  ]\n}\n",
+  "user_prompt": "Audit this single webpage.\n\nURL: https://example.com/\n\nFACTUAL METRICS (use these numbers in your analysis):\n{\n  \"word_count\": 19,\n  \"headings\": {\n    \"h1\": 1,\n    \"h2\": 0,\n    \"h3\": 0\n  },\n  \"cta_count\": 1,\n  \"internal_links\": 0,\n  \"external_links\": 1,\n  \"image_count\": 0,\n  \"images_missing_alt_pct\": 0.0,\n  \"meta_title\": \"Example Domain\",\n  \"meta_description\": \"\"\n}\n\nPAGE TEXT EXCERPT:\nExample Domain This domain is for use in documentation examples without needing permission. Avoid use in operations. Learn more\n\nProduce insights for:\n1. SEO structure\n2. Messaging clarity\n3. CTA usage\n4. Content depth\n5. Obvious UX or structural concerns\n\nAlso provide 3-5 prioritized recommendations. Each recommendation must explain why it matters using the metrics above.\nReturn JSON only.\n",
+  "structured_inputs": {
+    "url": "https://example.com/",
+    "metrics": {
+      "word_count": 19,
+      "headings": {
+        "h1": 1,
+        "h2": 0,
+        "h3": 0
+      },
+      "cta_count": 1,
+      "internal_links": 0,
+      "external_links": 1,
+      "image_count": 0,
+      "images_missing_alt_pct": 0.0,
+      "meta_title": "Example Domain",
+      "meta_description": ""
+    },
+    "page_text_excerpt": "Example Domain This domain is for use in documentation examples without needing permission. Avoid use in operations. Learn more"
+  },
+  "raw_model_output": "{\n  \"seo_structure\": {\n    \"summary\": \"Minimal SEO footprint with 1 H1 and no meta description.\",\n    \"details\": \"The page has 19 words, 1 H1, 0 H2/H3 headings, and an empty meta description. Meta title is present (Example Domain) but description is missing, limiting snippet control in search results.\"\n  },\n  \"messaging_clarity\": {\n    \"summary\": \"Purpose is clear but extremely brief.\",\n    \"details\": \"With only 19 words, the page communicates that the domain is for documentation examples. Messaging is clear for its intent but offers no conversion path beyond a single Learn more link.\"\n  },\n  \"cta_usage\": {\n    \"summary\": \"Single CTA detected.\",\n    \"details\": \"cta_count is 1 (Learn more link). No buttons or form submits. For a marketing page this would be underpowered, though acceptable for a placeholder domain page.\"\n  },\n  \"content_depth\": {\n    \"summary\": \"Very shallow content.\",\n    \"details\": \"word_count is 19 with no H2/H3 structure. The page lacks supporting sections, proof points, or detailed copy needed for SEO or conversion.\"\n  },\n  \"ux_concerns\": {\n    \"summary\": \"No major structural UX issues on this minimal page.\",\n    \"details\": \"0 images means no alt-text accessibility concerns. Link balance is 0 internal and 1 external. Structure is simple and readable but not representative of a full marketing site.\"\n  },\n  \"recommendations\": [\n    {\n      \"priority\": 1,\n      \"title\": \"Add a meta description\",\n      \"reasoning\": \"meta_description is empty while meta_title exists. Adding a 150-160 character description would improve search snippet quality.\"\n    },\n    {\n      \"priority\": 2,\n      \"title\": \"Expand heading structure\",\n      \"reasoning\": \"Only 1 H1 and 0 H2/H3 tags. Adding subheadings would improve scannability if this page needs to rank or inform visitors.\"\n    },\n    {\n      \"priority\": 3,\n      \"title\": \"Increase substantive copy\",\n      \"reasoning\": \"word_count is 19, which limits SEO value and user understanding. Add a short supporting paragraph if the page serves a marketing purpose.\"\n    }\n  ]\n}",
+}
