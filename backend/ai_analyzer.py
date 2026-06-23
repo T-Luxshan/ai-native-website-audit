@@ -1,5 +1,8 @@
 import json
 import os
+import re
+import time
+from typing import Optional
 
 import google.generativeai as genai
 from dotenv import load_dotenv
@@ -10,7 +13,7 @@ from prompt_logger import log_prompt_trace
 
 load_dotenv()
 
-MODEL_NAME = "gemini-1.5-flash"
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
 
 SYSTEM_PROMPT = """You are a senior web strategist at a digital marketing agency.
 You analyze webpages for SEO, messaging clarity, CTA effectiveness,
@@ -94,19 +97,47 @@ def _parse_analysis(raw_text: str) -> AIAnalysis:
         raise AIAnalyzerError(f"Model JSON did not match schema: {exc}") from exc
 
 
-def _call_model(model: genai.GenerativeModel, prompt: str) -> str:
-    try:
-        response = model.generate_content(
-            prompt,
-            generation_config={"response_mime_type": "application/json"},
+def _format_api_error(exc: Exception) -> str:
+    message = str(exc)
+    if "429" in message or "quota" in message.lower():
+        return (
+            "Gemini API rate limit or free-tier quota exceeded. "
+            f"Try again in a minute, set GEMINI_MODEL to gemini-2.5-flash-lite, "
+            f"or check usage at https://ai.dev/rate-limit. Details: {message[:300]}"
         )
-    except Exception as exc:
-        raise AIAnalyzerError(f"Gemini API request failed: {exc}") from exc
+    return f"Gemini API request failed: {message}"
 
-    raw_text = (response.text or "").strip()
-    if not raw_text:
-        raise AIAnalyzerError("Gemini API returned an empty response")
-    return raw_text
+
+def _retry_delay_seconds(exc: Exception) -> Optional[float]:
+    match = re.search(r"retry in ([0-9.]+)s", str(exc), re.I)
+    if match:
+        return min(float(match.group(1)) + 1, 60)
+    return None
+
+
+def _call_model(model: genai.GenerativeModel, prompt: str) -> str:
+    last_error = None
+    for attempt in range(2):
+        try:
+            response = model.generate_content(
+                prompt,
+                generation_config={"response_mime_type": "application/json"},
+            )
+            raw_text = (response.text or "").strip()
+            if not raw_text:
+                raise AIAnalyzerError("Gemini API returned an empty response")
+            return raw_text
+        except AIAnalyzerError:
+            raise
+        except Exception as exc:
+            last_error = exc
+            delay = _retry_delay_seconds(exc)
+            if attempt == 0 and delay is not None:
+                time.sleep(delay)
+                continue
+            raise AIAnalyzerError(_format_api_error(exc)) from exc
+
+    raise AIAnalyzerError(_format_api_error(last_error))
 
 
 def analyze_page(scrape_result: dict) -> AIAnalysis:
