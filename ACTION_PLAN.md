@@ -66,41 +66,41 @@ ai-native-website-audit/
 
 ## Phase 1 — Project Setup
 
-- [ ] Confirm git repo is initialized (`git status` runs without error)
-- [ ] Create root [`.gitignore`](.gitignore) ignoring: `__pycache__/`, `*.pyc`, `.env`, `venv/`, `node_modules/`, `dist/`, `backend/prompt_logs/*.json` (keep `backend/prompt_logs/.gitkeep` and `prompt_logs/sample-audit-log.json`)
-- [ ] Create folder tree: `backend/`, `backend/routes/`, `backend/prompt_logs/`, `frontend/src/api/`, `frontend/src/components/`, `frontend/src/styles/`, `prompt_logs/`
-- [ ] Add `backend/prompt_logs/.gitkeep` and `prompt_logs/.gitkeep` (if needed)
-- [ ] Create Python virtual environment from project root:
+- [x] Confirm git repo is initialized (`git status` runs without error)
+- [x] Create root [`.gitignore`](.gitignore) ignoring: `__pycache__/`, `*.pyc`, `.env`, `venv/`, `node_modules/`, `dist/`, `backend/prompt_logs/*.json` (keep `backend/prompt_logs/.gitkeep` and `prompt_logs/sample-audit-log.json`)
+- [x] Create folder tree: `backend/`, `backend/routes/`, `backend/prompt_logs/`, `frontend/src/api/`, `frontend/src/components/`, `frontend/src/styles/`, `prompt_logs/`
+- [x] Add `backend/prompt_logs/.gitkeep` and `prompt_logs/.gitkeep` (if needed)
+- [x] Create Python virtual environment from project root:
   ```bash
   cd backend
   python -m venv venv
   ```
-- [ ] Activate venv (Windows PowerShell): `.\venv\Scripts\Activate.ps1`
-- [ ] Install backend dependencies:
+- [x] Activate venv (Windows PowerShell): `.\venv\Scripts\Activate.ps1`
+- [x] Install backend dependencies:
   ```bash
   pip install fastapi uvicorn requests beautifulsoup4 google-generativeai pydantic python-dotenv
   pip freeze > requirements.txt
   ```
-- [ ] Create [`backend/.env.example`](backend/.env.example):
+- [x] Create [`backend/.env.example`](backend/.env.example):
   ```
   GEMINI_API_KEY=your_key_here
   CORS_ORIGINS=http://localhost:5173
   ```
-- [ ] Copy to local env: `cp .env.example .env` and add real Gemini API key
-- [ ] Scaffold frontend with Vite (plain JavaScript, no TypeScript):
+- [x] Copy to local env: `cp .env.example .env` and add real Gemini API key
+- [x] Scaffold frontend with Vite (plain JavaScript, no TypeScript):
   ```bash
   cd ..
   npm create vite@latest frontend -- --template react
   cd frontend
   npm install
   ```
-- [ ] Create [`frontend/.env.example`](frontend/.env.example):
+- [x] Create [`frontend/.env.example`](frontend/.env.example):
   ```
   VITE_API_URL=http://localhost:8000
   ```
-- [ ] Copy to local env: `cp .env.example .env`
-- [ ] Smoke-test backend starts: `cd backend && uvicorn main:app --reload --port 8000`
-- [ ] Smoke-test frontend starts: `cd frontend && npm run dev` (default `http://localhost:5173`)
+- [x] Copy to local env: `cp .env.example .env`
+- [x] Smoke-test backend starts: `cd backend && uvicorn main:app --reload --port 8000`
+- [x] Smoke-test frontend starts: `cd frontend && npm run dev` (default `http://localhost:5173`)
 
 ---
 

@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.env
+
+# Node
+node_modules/
+dist/
+
+# Runtime prompt logs (keep sample in prompt_logs/)
+backend/prompt_logs/*.json
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
