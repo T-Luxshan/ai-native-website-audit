@@ -12,7 +12,7 @@ node_modules/
 dist/
 
 # Runtime prompt logs (keep sample in prompt_logs/)
-backend/prompt_logs/*.json
+# backend/prompt_logs/*.json
 
 # IDE / OS
 .vscode/
