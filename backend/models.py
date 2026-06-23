@@ -1,4 +1,7 @@
-from pydantic import BaseModel, Field, field_validator
+from datetime import datetime
+from typing import Any
+
+from pydantic import BaseModel, Field, HttpUrl, field_validator
 
 
 class InsightSection(BaseModel):
@@ -27,4 +30,12 @@ class AIAnalysis(BaseModel):
 
 
 class AuditRequest(BaseModel):
+    url: HttpUrl
+
+
+class AuditResponse(BaseModel):
     url: str
+    audited_at: datetime
+    metrics: dict[str, Any]
+    insights: dict[str, dict[str, str]]
+    recommendations: list[Recommendation]
