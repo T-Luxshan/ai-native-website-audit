@@ -110,31 +110,31 @@ Implements [REQUIREMENTS.md — Factual Metrics](REQUIREMENTS.md#1-factual-metri
 
 Create [`backend/scraper.py`](backend/scraper.py) with a public function `scrape_page(url: str) -> dict`.
 
-- [ ] Implement `fetch_html(url)` using `requests.get`:
+- [x] Implement `fetch_html(url)` using `requests.get`:
   - 10-second timeout
   - User-Agent header (e.g. `WebsiteAuditBot/1.0`)
   - Raise a clear exception on non-2xx status codes, timeouts, or connection errors
-- [ ] Parse HTML with BeautifulSoup4 using `html.parser`
-- [ ] Extract **total word count** (REQUIREMENTS.md):
+- [x] Parse HTML with BeautifulSoup4 using `html.parser`
+- [x] Extract **total word count** (REQUIREMENTS.md):
   - Remove `script`, `style`, `noscript` tags before counting
   - Count words in visible body text (split on whitespace)
-- [ ] Extract **heading counts H1–H3** (REQUIREMENTS.md): count all `h1`, `h2`, `h3` elements separately
-- [ ] Extract **number of CTAs** (REQUIREMENTS.md):
+- [x] Extract **heading counts H1–H3** (REQUIREMENTS.md): count all `h1`, `h2`, `h3` elements separately
+- [x] Extract **number of CTAs** (REQUIREMENTS.md):
   - Count `<button>` elements
   - Count `<input type="submit">` and `<input type="button">`
   - Count `<a>` tags whose text or class/id suggests a primary action (e.g. contains "btn", "cta", or text like "get started", "contact", "sign up", "learn more", "buy", "download")
-- [ ] Extract **internal vs external links** (REQUIREMENTS.md):
+- [x] Extract **internal vs external links** (REQUIREMENTS.md):
   - Iterate all `<a href="...">`
   - Skip empty, `#`, `mailto:`, `tel:`, and `javascript:` hrefs
   - Compare link host to page URL host → internal or external
-- [ ] Extract **number of images** (REQUIREMENTS.md): count all `<img>` tags
-- [ ] Extract **% of images missing alt text** (REQUIREMENTS.md):
+- [x] Extract **number of images** (REQUIREMENTS.md): count all `<img>` tags
+- [x] Extract **% of images missing alt text** (REQUIREMENTS.md):
   - Missing = no `alt` attribute or whitespace-only `alt`
   - Return float 0–100: `(missing / total) * 100`, or `0.0` if no images
-- [ ] Extract **meta title** from `<title>` tag (REQUIREMENTS.md)
-- [ ] Extract **meta description** from `<meta name="description" content="...">` (REQUIREMENTS.md)
-- [ ] Build `page_text_excerpt`: first ~3000 characters of cleaned body text for AI context
-- [ ] Return structured dict matching this shape:
+- [x] Extract **meta title** from `<title>` tag (REQUIREMENTS.md)
+- [x] Extract **meta description** from `<meta name="description" content="...">` (REQUIREMENTS.md)
+- [x] Build `page_text_excerpt`: first ~3000 characters of cleaned body text for AI context
+- [x] Return structured dict matching this shape:
 
 ```python
 {
@@ -154,8 +154,8 @@ Create [`backend/scraper.py`](backend/scraper.py) with a public function `scrape
 }
 ```
 
-- [ ] Add `if __name__ == "__main__"` block to print results for manual testing
-- [ ] Manually test against `https://example.com` and one real marketing site; verify all 7 metric groups populate
+- [x] Add `if __name__ == "__main__"` block to print results for manual testing
+- [x] Manually test against `https://example.com` and one real marketing site; verify all 7 metric groups populate
 
 ---
 
@@ -167,24 +167,24 @@ Create [`backend/models.py`](backend/models.py), [`backend/ai_analyzer.py`](back
 
 ### Pydantic schemas
 
-- [ ] Define `InsightSection` with fields: `summary` (str), `details` (str)
-- [ ] Define `Recommendation` with fields: `priority` (int 1–5), `title` (str), `reasoning` (str)
-- [ ] Define `AIAnalysis` with exactly 5 insight categories from REQUIREMENTS.md:
+- [x] Define `InsightSection` with fields: `summary` (str), `details` (str)
+- [x] Define `Recommendation` with fields: `priority` (int 1–5), `title` (str), `reasoning` (str)
+- [x] Define `AIAnalysis` with exactly 5 insight categories from REQUIREMENTS.md:
   - `seo_structure` — SEO structure
   - `messaging_clarity` — Messaging clarity
   - `cta_usage` — CTA usage
   - `content_depth` — Content depth
   - `ux_concerns` — Obvious UX or structural concerns
-- [ ] Add `recommendations: list[Recommendation]` (min 3, max 5 per REQUIREMENTS.md)
+- [x] Add `recommendations: list[Recommendation]` (min 3, max 5 per REQUIREMENTS.md)
 
 ### Prompt design
 
-- [ ] Write **system prompt** in `ai_analyzer.py` that:
+- [x] Write **system prompt** in `ai_analyzer.py` that:
   - Sets role as a web agency auditor (EIGHT25MEDIA context from assignment)
   - Requires insights to be grounded in provided metrics (REQUIREMENTS.md)
   - Requires specific, non-generic analysis that references factual numbers (REQUIREMENTS.md)
   - Instructs JSON-only output matching the `AIAnalysis` schema
-- [ ] Write **user prompt template** that injects:
+- [x] Write **user prompt template** that injects:
   - Page URL
   - Full metrics JSON from scraper
   - `page_text_excerpt`
@@ -192,22 +192,22 @@ Create [`backend/models.py`](backend/models.py), [`backend/ai_analyzer.py`](back
 
 ### Gemini API integration
 
-- [ ] Load `GEMINI_API_KEY` from environment via `python-dotenv`
-- [ ] Configure `google.generativeai` and instantiate `gemini-1.5-flash` model
-- [ ] Call model with system + user prompts; use `generation_config={"response_mime_type": "application/json"}` for structured output
-- [ ] Parse JSON response and validate with Pydantic `AIAnalysis` model
-- [ ] Retry once on JSON parse or validation failure with a stricter follow-up prompt
-- [ ] Expose public function `analyze_page(scrape_result: dict) -> AIAnalysis`
+- [x] Load `GEMINI_API_KEY` from environment via `python-dotenv`
+- [x] Configure `google.generativeai` and instantiate `gemini-1.5-flash` model
+- [x] Call model with system + user prompts; use `generation_config={"response_mime_type": "application/json"}` for structured output
+- [x] Parse JSON response and validate with Pydantic `AIAnalysis` model
+- [x] Retry once on JSON parse or validation failure with a stricter follow-up prompt
+- [x] Expose public function `analyze_page(scrape_result: dict) -> AIAnalysis`
 
 ### Prompt logging (REQUIREMENTS.md deliverable)
 
-- [ ] Implement `log_prompt_trace()` in [`backend/prompt_logger.py`](backend/prompt_logger.py) that writes a timestamped JSON file to `backend/prompt_logs/` containing:
-  - [ ] The system prompt(s) used
-  - [ ] The user prompt(s) as constructed
-  - [ ] The structured inputs sent to the model (metrics dict + excerpt)
-  - [ ] The raw model output before formatting
-- [ ] Redact API keys and sensitive values before writing
-- [ ] After a successful test audit, copy one sanitized log to [`prompt_logs/sample-audit-log.json`](prompt_logs/sample-audit-log.json) for submission
+- [x] Implement `log_prompt_trace()` in [`backend/prompt_logger.py`](backend/prompt_logger.py) that writes a timestamped JSON file to `backend/prompt_logs/` containing:
+  - [x] The system prompt(s) used
+  - [x] The user prompt(s) as constructed
+  - [x] The structured inputs sent to the model (metrics dict + excerpt)
+  - [x] The raw model output before formatting
+- [x] Redact API keys and sensitive values before writing
+- [x] After a successful test audit, copy one sanitized log to [`prompt_logs/sample-audit-log.json`](prompt_logs/sample-audit-log.json) for submission
 
 ---
 
@@ -217,16 +217,16 @@ Implements [REQUIREMENTS.md — Interface Requirements](REQUIREMENTS.md#interfac
 
 Create [`backend/main.py`](backend/main.py) and [`backend/routes/audit.py`](backend/routes/audit.py).
 
-- [ ] Create FastAPI app in `main.py`; load `.env` on startup
-- [ ] Configure CORS middleware using `CORS_ORIGINS` env var (comma-separated); default `http://localhost:5173`
-- [ ] Mount audit router from `routes/audit.py`
-- [ ] Implement `GET /health` returning `{ "status": "ok" }`
-- [ ] Define request model `AuditRequest` with `url: HttpUrl` field
-- [ ] Implement `POST /api/audit`:
-  - [ ] Accept JSON body `{ "url": "https://..." }`
-  - [ ] Validate URL is present and uses `http` or `https`
-  - [ ] Call `scrape_page(url)` then `analyze_page(scrape_result)`
-  - [ ] Return combined JSON with **clear separation** (REQUIREMENTS.md):
+- [x] Create FastAPI app in `main.py`; load `.env` on startup
+- [x] Configure CORS middleware using `CORS_ORIGINS` env var (comma-separated); default `http://localhost:5173`
+- [x] Mount audit router from `routes/audit.py`
+- [x] Implement `GET /health` returning `{ "status": "ok" }`
+- [x] Define request model `AuditRequest` with `url: HttpUrl` field
+- [x] Implement `POST /api/audit`:
+  - [x] Accept JSON body `{ "url": "https://..." }`
+  - [x] Validate URL is present and uses `http` or `https`
+  - [x] Call `scrape_page(url)` then `analyze_page(scrape_result)`
+  - [x] Return combined JSON with **clear separation** (REQUIREMENTS.md):
     ```json
     {
       "url": "...",
@@ -244,12 +244,12 @@ Create [`backend/main.py`](backend/main.py) and [`backend/routes/audit.py`](back
       ]
     }
     ```
-- [ ] Error handling with consistent `{ "detail": "..." }` responses:
-  - [ ] `400` — invalid or missing URL
-  - [ ] `422` — page fetch failed (timeout, DNS, non-2xx)
-  - [ ] `502` — Gemini API failure or unparseable AI response after retry
-- [ ] Test via Swagger UI at `http://localhost:8000/docs`
-- [ ] Test via curl:
+- [x] Error handling with consistent `{ "detail": "..." }` responses:
+  - [x] `400` — invalid or missing URL
+  - [x] `422` — page fetch failed (timeout, DNS, non-2xx)
+  - [x] `502` — Gemini API failure or unparseable AI response after retry
+- [x] Test via Swagger UI at `http://localhost:8000/docs`
+- [x] Test via curl:
   ```bash
   curl -X POST http://localhost:8000/api/audit \
     -H "Content-Type: application/json" \
@@ -262,48 +262,48 @@ Create [`backend/main.py`](backend/main.py) and [`backend/routes/audit.py`](back
 
 Implements [REQUIREMENTS.md — Interface Requirements](REQUIREMENTS.md#interface-requirements) (local/deployed web app) and mandatory separation of factual metrics from AI insights.
 
-- [ ] Create [`frontend/src/api/auditApi.js`](frontend/src/api/auditApi.js):
-  - [ ] Export `auditUrl(url)` function
-  - [ ] `POST` to `${import.meta.env.VITE_API_URL}/api/audit` with `{ url }`
-  - [ ] Parse JSON response; throw with `detail` message on non-2xx
-- [ ] Create [`frontend/src/components/UrlForm.jsx`](frontend/src/components/UrlForm.jsx):
-  - [ ] Text input for URL and submit button
-  - [ ] Client-side validation (non-empty, starts with `http://` or `https://`)
-  - [ ] Disable form while audit is in progress
-  - [ ] Call `onSubmit(url)` prop
-- [ ] Create [`frontend/src/components/MetricsPanel.jsx`](frontend/src/components/MetricsPanel.jsx) — **Factual Metrics section** (REQUIREMENTS.md), visually distinct from AI content:
-  - [ ] Total word count
-  - [ ] Heading counts (H1, H2, H3)
-  - [ ] Number of CTAs
-  - [ ] Internal links count
-  - [ ] External links count
-  - [ ] Number of images
-  - [ ] % of images missing alt text
-  - [ ] Meta title
-  - [ ] Meta description
-- [ ] Create [`frontend/src/components/InsightsPanel.jsx`](frontend/src/components/InsightsPanel.jsx) — **AI Insights section** (REQUIREMENTS.md):
-  - [ ] SEO structure
-  - [ ] Messaging clarity
-  - [ ] CTA usage
-  - [ ] Content depth
-  - [ ] Obvious UX or structural concerns
-- [ ] Create [`frontend/src/components/RecommendationsPanel.jsx`](frontend/src/components/RecommendationsPanel.jsx):
-  - [ ] Display 3–5 recommendations sorted by priority (REQUIREMENTS.md)
-  - [ ] Show priority badge, title, and reasoning for each
-- [ ] Create [`frontend/src/components/LoadingState.jsx`](frontend/src/components/LoadingState.jsx): visible spinner/message during audit (scraping + AI can take 10–30s)
-- [ ] Create [`frontend/src/components/ErrorBanner.jsx`](frontend/src/components/ErrorBanner.jsx): display API error messages
-- [ ] Wire [`frontend/src/App.jsx`](frontend/src/App.jsx):
-  - [ ] Page title and brief description
-  - [ ] `UrlForm` at top
-  - [ ] Two clearly labeled sections: **"Factual Metrics"** and **"AI Analysis"**
-  - [ ] Render `MetricsPanel` only in factual section; `InsightsPanel` + `RecommendationsPanel` in AI section
-  - [ ] Manage state: `loading`, `error`, `auditResult`
-- [ ] Style in [`frontend/src/styles/App.css`](frontend/src/styles/App.css):
-  - [ ] Clean, readable layout suitable for a web agency tool
-  - [ ] Visual distinction between metrics card and AI analysis card (different background/border)
-  - [ ] Responsive single-column layout on mobile
-- [ ] Set local env: `VITE_API_URL=http://localhost:8000` in `frontend/.env`
-- [ ] Remove default Vite boilerplate CSS/assets not needed
+- [x] Create [`frontend/src/api/auditApi.js`](frontend/src/api/auditApi.js):
+  - [x] Export `auditUrl(url)` function
+  - [x] `POST` to `${import.meta.env.VITE_API_URL}/api/audit` with `{ url }`
+  - [x] Parse JSON response; throw with `detail` message on non-2xx
+- [x] Create [`frontend/src/components/UrlForm.jsx`](frontend/src/components/UrlForm.jsx):
+  - [x] Text input for URL and submit button
+  - [x] Client-side validation (non-empty, starts with `http://` or `https://`)
+  - [x] Disable form while audit is in progress
+  - [x] Call `onSubmit(url)` prop
+- [x] Create [`frontend/src/components/MetricsPanel.jsx`](frontend/src/components/MetricsPanel.jsx) — **Factual Metrics section** (REQUIREMENTS.md), visually distinct from AI content:
+  - [x] Total word count
+  - [x] Heading counts (H1, H2, H3)
+  - [x] Number of CTAs
+  - [x] Internal links count
+  - [x] External links count
+  - [x] Number of images
+  - [x] % of images missing alt text
+  - [x] Meta title
+  - [x] Meta description
+- [x] Create [`frontend/src/components/InsightsPanel.jsx`](frontend/src/components/InsightsPanel.jsx) — **AI Insights section** (REQUIREMENTS.md):
+  - [x] SEO structure
+  - [x] Messaging clarity
+  - [x] CTA usage
+  - [x] Content depth
+  - [x] Obvious UX or structural concerns
+- [x] Create [`frontend/src/components/RecommendationsPanel.jsx`](frontend/src/components/RecommendationsPanel.jsx):
+  - [x] Display 3–5 recommendations sorted by priority (REQUIREMENTS.md)
+  - [x] Show priority badge, title, and reasoning for each
+- [x] Create [`frontend/src/components/LoadingState.jsx`](frontend/src/components/LoadingState.jsx): visible spinner/message during audit (scraping + AI can take 10–30s)
+- [x] Create [`frontend/src/components/ErrorBanner.jsx`](frontend/src/components/ErrorBanner.jsx): display API error messages
+- [x] Wire [`frontend/src/App.jsx`](frontend/src/App.jsx):
+  - [x] Page title and brief description
+  - [x] `UrlForm` at top
+  - [x] Two clearly labeled sections: **"Factual Metrics"** and **"AI Analysis"**
+  - [x] Render `MetricsPanel` only in factual section; `InsightsPanel` + `RecommendationsPanel` in AI section
+  - [x] Manage state: `loading`, `error`, `auditResult`
+- [x] Style in [`frontend/src/styles/App.css`](frontend/src/styles/App.css):
+  - [x] Clean, readable layout suitable for a web agency tool
+  - [x] Visual distinction between metrics card and AI analysis card (different background/border)
+  - [x] Responsive single-column layout on mobile
+- [x] Set local env: `VITE_API_URL=http://localhost:8000` in `frontend/.env`
+- [x] Remove default Vite boilerplate CSS/assets not needed
 
 ---
 
