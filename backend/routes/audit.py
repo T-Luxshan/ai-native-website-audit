@@ -11,12 +11,7 @@ router = APIRouter()
 
 @router.get("/health")
 def health():
-    return {"status": "Ok"}
-
-@router.get("/ping")
-def ping():
-    return {"status": "Pong"}
-    
+    return {"status": "ok"}
 @router.post("/api/audit", response_model=AuditResponse)
 def run_audit(request: AuditRequest):
     url = str(request.url)
