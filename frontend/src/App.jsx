@@ -40,8 +40,8 @@ function App() {
         <div className="brand-badge">
           <div className="brand-badge__icon" aria-hidden="true">
             <svg
-              width="20"
-              height="20"
+              width="19"
+              height="19"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -49,10 +49,11 @@ function App() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </div>
-          <span className="brand-badge__text">PulseAudit AI</span>
+          <span className="brand-badge__text">Audit AI</span>
         </div>
 
         <div className="model-pill">
