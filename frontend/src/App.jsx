@@ -74,7 +74,7 @@ function App() {
       <section className="hero">
         <h1 className="hero__title">AI-Powered Website Auditing</h1>
         <p className="hero__subtitle">
-          Analyze SEO, Accessibility, Content Quality and User Experience in
+          Analyze SEO, analytics, content quality and user experience in
           seconds using deterministic analysis and Gemini AI.
         </p>
 
@@ -89,11 +89,11 @@ function App() {
           </span>
           <span className="feature-chip">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="4" r="2" />
-              <path d="M18 19v-4a4 4 0 0 0-8 0v4" />
-              <path d="M6 10h12" />
+              <line x1="18" y1="20" x2="18" y2="10" />
+              <line x1="12" y1="20" x2="12" y2="4" />
+              <line x1="6" y1="20" x2="6" y2="14" />
             </svg>
-            Accessibility
+            Analytics
           </span>
           <span className="feature-chip">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
